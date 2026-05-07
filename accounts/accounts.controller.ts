@@ -10,15 +10,14 @@ router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/refreshtoken', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
-router.post('/verify-email', verifyEmailSchema, verifyemail);
+router.post('/verify-email', verifyEmailSchema, verifyEmail);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-request-token', validateRequestTokenSchema, validateRequestToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 router.get('/', authorize(Role.Admin), getAll);
 router.get('/:id', authorize, getById);
-router.post('/', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
-router.put('/:id', authorize(), updateSchema, upadate);
+router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 
 export default router;
@@ -66,7 +65,7 @@ function revokeToken (req: any, res: any, next:any) {
 
     if (!token) return res.status(400).json({message: 'Token is required'});
 
-    if(!req.user.ownsToken(token) && req.user.role !== Role.Admin){
+    if(!req.auth.ownsToken(token) && req.auth.role !== Role.Admin){
         return res.status(401).json({message: 'Unauthorized'});
     }
 
@@ -155,6 +154,7 @@ function resetPassword(req: any, res: any, next:any){
 }
 
 function getAll (req: any, res: any, next:any){
+    console.log('IM IN')
     accountService.getAll()
             .then((accounts:any) => res.json(accounts))
             .catch(next);
@@ -200,7 +200,7 @@ function updateSchema (req: any, res: any, next:any){
         confirmPasssord: Joi.string().valid(Joi.ref('password')).empty('')
     }
 
-    if (req.user.role === Role.Admin) {
+    if (req.auth.role === Role.Admin) {
         schemaRules.role = Joi.string().valid(Role.Admin, Role.User).empty('');
     }
 
@@ -210,7 +210,8 @@ function updateSchema (req: any, res: any, next:any){
 
 
 function update(req: any, res: any, next:any){
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    console.log(req)
+    if (Number(req.params.id) !== req.auth.id && req.auth.role !== Role.Admin) {
         return res.status(401).json({message: 'Unauthorized'});
     }
 
@@ -220,7 +221,7 @@ function update(req: any, res: any, next:any){
 }
 
 function _delete(req: any, res: any, next:any){
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    if (Number(req.params.id) !== req.auth.id && req.auth.role !== Role.Admin) {
         return res.status(401).json({message: 'Unauthorized'});
     }
 

@@ -5,7 +5,7 @@ export default function model(sequelize:any){
         token: {type: DataTypes.STRING},
         expires: {type: DataTypes.DATE},
         created: {type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW},
-        createdByIp: {types: DataTypes.STRING},
+        createdByIp: {type: DataTypes.STRING},
         revoked: {type: DataTypes.DATE},
         revokedByIp: {type: DataTypes.STRING},
         replacedByToken: { type: DataTypes.STRING},

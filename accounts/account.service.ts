@@ -197,7 +197,7 @@ async function hash(password: any){
 }
 
 function generateJwtToken(account: any){
-    return jwt.sign({sub: account.id, id: account.id}, config.secret, {expiresIn: '15m'});
+    return jwt.sign({sub: account.id, id: account.id, role: account.role}, config.secret, {expiresIn: '15m'});
 
 }
 
