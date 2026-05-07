@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "ts-node ./server.ts",
-    "start:dev" : "nodedmon --exec t-node ./server.ts"
-    
+    "start": "ts-node ./server.ts",
+    "start:dev": "nodemon --exec ts-node ./server.ts"
   },
   "keywords": [],
   "author": "",
