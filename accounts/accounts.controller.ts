@@ -197,7 +197,7 @@ function updateSchema (req: any, res: any, next:any){
         lastName: Joi.string().empty(''),
         email: Joi.string().email().empty(''),
         password: Joi.string().min(6).empty(''),
-        confirmPasssord: Joi.string().valid(Joi.ref('password')).empty('')
+        confirmPassword: Joi.string().valid(Joi.ref('password')).empty('')
     }
 
     if (req.auth.role === Role.Admin) {
