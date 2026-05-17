@@ -6,6 +6,10 @@ import { Op } from 'sequelize';
 import sendEmail from '../_helpers/send-email';
 import db from '../_helpers/db';
 import Role from '../_helpers/role'
+import {FileConfig} from '../_helpers/config-loader';
+import {loadFileConfig} from '../_helpers/config-loader';
+
+const fileConfig:FileConfig = process.env.NODE_ENV === 'production' ? {} : loadFileConfig();
 
 export default {
     authenticate,
@@ -143,9 +147,16 @@ async function getById(id: any) {
 }
 
 async function create(params: any) {
-    if (!await db.Account.findOne({where: {email: params.email}})){
-        throw 'Email "' + params.email + '" is already registered';
-    }
+    const existing = await db.Account.findOne({
+    where: { email: params.email }
+});
+
+console.log('EMAIL:', params.email);
+console.log('EXISTING:', existing);
+
+if (existing) {
+    throw 'Email "' + params.email + '" is lolz already registered';
+}
 
     const account = new db.Account(params);
     account.verified = Date.now();
@@ -196,9 +207,24 @@ async function hash(password: any){
     return await bcrypt.hash(password, 10)
 }
 
-function generateJwtToken(account: any){
-    return jwt.sign({sub: account.id, id: account.id, role: account.role}, config.secret, {expiresIn: '15m'});
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET || fileConfig.secret;
+  
+  if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is required in production');
+  }
+  
+  if (!secret) throw new Error('JWT secret is missing');
+  return secret;
+}
 
+
+function generateJwtToken(account: any) {
+  return jwt.sign(
+    { sub: account.id, id: account.id, role: account.role }, 
+    getJwtSecret(), 
+    { expiresIn: '15m' }
+  );
 }
 
 function generateRefreshToken(account:any, ipAdress: any){
