@@ -7,7 +7,7 @@ import Role from '../_helpers/role';
 import accountService from './account.service';
 
 router.post('/authenticate', authenticateSchema, authenticate);
-router.post('/refreshtoken', refreshToken);
+router.post('/refresh-token', refreshToken);
 router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/verify-email', verifyEmailSchema, verifyEmail);
@@ -15,12 +15,16 @@ router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
 router.post('/validate-request-token', validateRequestTokenSchema, validateRequestToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 router.get('/', authorize(Role.Admin), getAll);
-router.get('/:id', authorize, getById);
+router.get('/:id', authorize(), getById);
 router.post('/', authorize(Role.Admin), createSchema, create);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
 
+
+
 export default router;
+
+
 
 function authenticateSchema(req: any, res: any, next:any) {
     const schema = Joi.object({
@@ -161,7 +165,8 @@ function getAll (req: any, res: any, next:any){
 }
 
 function getById(req: any, res: any, next:any){
-    if (Number(req.params.id) !== req.user.id && req.user.role !== Role.Admin) {
+    console.log('HELLAUR')
+    if (Number(req.params.id) !== Number(req.auth.id) && req.auth.role !== Role.Admin) {
         return res.status(401).json({message: 'Unauthotized'});
     }
 
@@ -234,7 +239,9 @@ function _delete(req: any, res: any, next:any){
 function setTokenCookie(res: any, token: any){
     const cookieOptions = {
         httpOnly: true,
-        expires: new Date(Date.now() + 7*24*69*69*1000)
+        expires: new Date(Date.now() + 7*24*69*69*1000),
+        sameSite: process.env.COOKIE_SAMESITE || 'lax',
+        secure: process.env.COOKIE_SECURE === 'true'
     };
 
     res.cookie('refreshToken', token, cookieOptions)
