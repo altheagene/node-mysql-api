@@ -19,7 +19,7 @@ async function sendWithResend({ to, subject, html, from }: any) {
     
     return data;
 }
-export default async function sendEmail({to, subject, html, from = config.emailFrom} : any){
+export default async function sendEmail({to, subject, html, from} : any){
 
     const hasResend = !!process.env.RESEND_API_KEY;
 
