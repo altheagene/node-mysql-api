@@ -16,11 +16,21 @@ initialize();
 async function initialize(){
     // const {host, port, user, password, database} = config.database;
     const host = process.env.DB_HOST || fileConfig.database.host;
-    const port = Number(process.env.DB_PORT );
+    const port = Number(process.env.DB_PORT || fileConfig.database.port);
     const user = process.env.DB_USER || fileConfig.database.user;
     const password = process.env.DB_PASSWORD || fileConfig.database.password;
     const database = process.env.DB_NAME || fileConfig.database.database;
     const ssl = process.env.DB_SSL === 'true' || fileConfig.database?.ssl 
+
+    console.log(process.env.DB_HOST)
+    console.log('=== DB CONNECTION DEBUG ===');
+    console.log('Host:', host);
+    console.log('Port:', port);
+    console.log('User:', user);
+    console.log('Database:', database);
+    console.log('SSL:', ssl);
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    console.log('==========================');
    
 
     if(process.env.NODE_ENV !== 'production') {
