@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 //allow cors requests from any origin and with credentials
 // app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true}));
-app.use(cors({origin : process.env.CORS_ORIGIN == 'true' ?
+app.use(cors({origin : process.env.CORS_ORIGIN  ?
             (corsOrigin ? corsOrigin.split(',').map(x => x.trim()) : false) 
             : (origin, callback) => callback(null, true)
 }));
