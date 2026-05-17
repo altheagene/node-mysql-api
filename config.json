@@ -6,7 +6,8 @@
         "port" : 3306,
         "user" : "root",
         "password" : "Soraya128!",
-        "database" : "node_mysql_api"
+        "database" : "node_mysql_api",
+        "ssl" : false
     },
     "secret" : "mYs3cr3tk3y",
     "emailFrom" : "info@my-node-api.com",

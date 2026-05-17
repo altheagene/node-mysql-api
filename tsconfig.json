@@ -45,6 +45,7 @@
 
 {
   "compilerOptions": {
+    "types": ["node"],
     "target" : "es2018",
     "module": "commonjs",
     "lib": ["es2018"],

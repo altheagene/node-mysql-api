@@ -6,14 +6,20 @@ import errorHandler from './_middleware/error-handler';
 import accountsController from './accounts/accounts.controller'
 import swaggerDocs from './_helpers/swagger'
 
-const app = express()
+const app = express();
+const corsOrigin = process.env.CORS_ORIGIN || '*';
+console.log("SERVER FILE LOADED");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 //allow cors requests from any origin and with credentials
-app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true}));
+// app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true}));
+app.use(cors({origin : process.env.CORS_ORIGIN == 'true' ?
+            (corsOrigin ? corsOrigin.split(',').map(x => x.trim()) : false) 
+            : (origin, callback) => callback(null, true)
+}));
 
 //api routes
 app.use('/accounts', accountsController);
