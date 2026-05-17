@@ -47,7 +47,7 @@ async function initialize(){
     
    
     //connect to db
-    const sequelize = new Sequelize(database, user, password, {dialect : 'mysql'});
+    const sequelize = new Sequelize(database, user, password, {dialect : 'mysql', host: host, port: port});
 
     //init models
     db.Account = accountModel(sequelize);
