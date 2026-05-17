@@ -36,7 +36,7 @@ async function initialize(){
     if(process.env.NODE_ENV !== 'production') {
         
        try{
-            const connection = await mysql.createConnection({host, port, user, password});
+            const connection = await mysql.createConnection({host, port, user, password, ssl: ssl ? { rejectUnauthorized: false } : undefined});
             await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
        }catch(err){
@@ -47,7 +47,11 @@ async function initialize(){
     
    
     //connect to db
-    const sequelize = new Sequelize(database, user, password, {dialect : 'mysql', host: host, port: port});
+    const sequelize = new Sequelize(database, user, password, {dialect : 'mysql', host: host, port: port, dialectOptions: ssl ? {
+            ssl: {
+                rejectUnauthorized: false
+            }
+        } : {}});
 
     //init models
     db.Account = accountModel(sequelize);
