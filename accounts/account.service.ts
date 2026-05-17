@@ -248,7 +248,8 @@ function basicDetails(account: any){
 async function sendVerificationEmail(account: any, origin: any){
     let message;
     if(origin){
-        const verifyUrl = `${origin}/account/verify-email?token=${account.verificationToken}`;
+        const produrl = process.env.NODE_ENV === 'production' ? '/angular-21-example' : ''
+        const verifyUrl = `${origin}${produrl}/account/verify-email?token=${account.verificationToken}`;
         message = `<p>Please click the link below to verify your email address: </p>
                     <p><a href="${verifyUrl}">${verifyUrl}</a></p>`;
     } else {
