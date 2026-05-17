@@ -16,7 +16,7 @@ initialize();
 async function initialize(){
     // const {host, port, user, password, database} = config.database;
     const host = process.env.DB_HOST || fileConfig.database.host;
-    const port = Number(process.env.DB_PORT || fileConfig.database.port);
+    const port = Number(process.env.DB_PORT );
     const user = process.env.DB_USER || fileConfig.database.user;
     const password = process.env.DB_PASSWORD || fileConfig.database.password;
     const database = process.env.DB_NAME || fileConfig.database.database;
