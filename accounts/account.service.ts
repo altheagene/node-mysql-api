@@ -148,15 +148,15 @@ async function getById(id: any) {
 
 async function create(params: any) {
     const existing = await db.Account.findOne({
-    where: { email: params.email }
-});
+        where: { email: params.email }
+    });
 
-console.log('EMAIL:', params.email);
-console.log('EXISTING:', existing);
+    console.log('EMAIL:', params.email);
+    console.log('EXISTING:', existing);
 
-if (existing) {
-    throw 'Email "' + params.email + '" is lolz already registered';
-}
+    if (existing) {
+        throw 'Email "' + params.email + '" is already registered';
+    }
 
     const account = new db.Account(params);
     account.verified = Date.now();
