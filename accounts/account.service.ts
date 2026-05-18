@@ -49,6 +49,10 @@ async function authenticate({email, password, ipAdress} : any){
 async function refreshToken({token, ipAdress} : any){
     const refreshToken = await getRefreshToken(token);
 
+    if (!token) {
+        throw new Error('Refresh token is required');
+    }
+    
      if (!refreshToken || !refreshToken.isActive) {
         throw new Error('Invalid or expired refresh token');
     }
