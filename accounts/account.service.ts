@@ -52,7 +52,7 @@ async function refreshToken({token, ipAdress} : any){
     if (!token) {
         throw new Error('Refresh token is required');
     }
-    
+
      if (!refreshToken || !refreshToken.isActive) {
         throw new Error('Invalid or expired refresh token');
     }
@@ -206,6 +206,10 @@ async function getAccount(id: any){
 }
 
 async function getRefreshToken(token: any) {
+
+    if (!token) {
+        throw new Error('Refresh token is required');
+    }
     const refreshToken = await db.RefreshToken.findOne({where: {token}});
     if(!refreshToken || !refreshToken.isActive) throw 'Invalid token';
     return refreshToken;
