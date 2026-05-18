@@ -48,14 +48,6 @@ async function authenticate({email, password, ipAdress} : any){
 
 async function refreshToken({token, ipAdress} : any){
     const refreshToken = await getRefreshToken(token);
-
-    if (!token) {
-        throw new Error('Refresh token is required');
-    }
-
-     if (!refreshToken || !refreshToken.isActive) {
-        throw new Error('Invalid or expired refresh token');
-    }
     const account  = await refreshToken.getAccount();
 
     const newRefreshToken = generateRefreshToken(account, ipAdress);
@@ -206,10 +198,6 @@ async function getAccount(id: any){
 }
 
 async function getRefreshToken(token: any) {
-
-    if (!token) {
-        throw new Error('Refresh token is required');
-    }
     const refreshToken = await db.RefreshToken.findOne({where: {token}});
     if(!refreshToken || !refreshToken.isActive) throw 'Invalid token';
     return refreshToken;
