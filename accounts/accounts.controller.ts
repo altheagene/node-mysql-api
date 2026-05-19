@@ -12,7 +12,7 @@ router.post('/revoke-token', authorize(), revokeTokenSchema, revokeToken);
 router.post('/register', registerSchema, register);
 router.post('/verify-email', verifyEmailSchema, verifyEmail);
 router.post('/forgot-password', forgotPasswordSchema, forgotPassword);
-router.post('/validate-request-token', validateRequestTokenSchema, validateRequestToken);
+router.post('/validate-reset-token', validateResetTokenSchema, validateResetToken);
 router.post('/reset-password', resetPasswordSchema, resetPassword);
 router.get('/', authorize(Role.Admin), getAll);
 router.get('/:id', authorize(), getById);
@@ -127,7 +127,7 @@ function forgotPassword(req: any, res: any, next:any){
         .catch(next)
 }
 
-function validateRequestTokenSchema(req: any, res: any, next:any){
+function validateResetTokenSchema(req: any, res: any, next:any){
     const schema = Joi.object({
         token: Joi.string().required()
     });
@@ -135,7 +135,7 @@ function validateRequestTokenSchema(req: any, res: any, next:any){
     validateRequest(req, next, schema);
 }
 
-function validateRequestToken(req: any, res: any, next:any){
+function validateResetToken(req: any, res: any, next:any){
     accountService.validateResetToken(req.body)
         .then(() => res.json({message: 'Token is valid'}))
         .catch(next);

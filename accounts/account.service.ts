@@ -111,6 +111,9 @@ async function forgotPassword({email} : any, origin: any){
      account.resetTokenExpires = new Date(Date.now() + 24*60*60*1000);
      await account.save();
 
+    console.log('STORED TOKEN:', account.resetToken);
+    console.log('STORED TOKEN LENGTH:', account.resetToken?.length);
+
      await sendPasswordResetEmail(account, origin);
 }
 
@@ -231,7 +234,7 @@ function generateRefreshToken(account:any, ipAdress: any){
     return new db.RefreshToken({
         accountId: account.id,
         token: randomTokenString(),
-        expires: new Date(Date.now() + 7*24*60*1000),
+        expires: new Date(Date.now() + 7*24*60*60*1000),
         createdByIp: ipAdress
     });
 }
