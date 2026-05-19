@@ -239,10 +239,12 @@ function _delete(req: any, res: any, next:any){
 function setTokenCookie(res: any, token: any){
     const cookieOptions = {
         httpOnly: true,
-        expires: new Date(Date.now() + 7*24*69*69*1000),
-        sameSite: process.env.COOKIE_SAMESITE || 'lax',
+        expires: new Date(Date.now() + 7*24*60*60*1000),
+        sameSite: process.env.COOKIE_SAMESITE || 'none',
         secure: process.env.COOKIE_SECURE === 'true'
     };
 
     res.cookie('refreshToken', token, cookieOptions)
 }
+
+
