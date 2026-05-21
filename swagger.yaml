@@ -4,6 +4,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:4000
+  - url: https://node-mysql-api-mpmw.onrender.com/
 
 paths:
   /accounts/authenticate:
